@@ -1,5 +1,7 @@
 package com.tom.domain;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 public class Footballer {
@@ -14,8 +16,9 @@ public class Footballer {
     private final Position position;
     private final int yearOfBirth;
     private final ClubTeam currentClubTeam;
+    private final List<ClubTeam> clubTeamHistory;
 
-    private Footballer(int id, String name, Country country, int minutesPlayed, int appearances, int goals, int redCards, int yellowCards, Position position, int yearOfBirth, ClubTeam currentClubTeam) {
+    private Footballer(int id, String name, Country country, int minutesPlayed, int appearances, int goals, int redCards, int yellowCards, Position position, int yearOfBirth, ClubTeam currentClubTeam, List<ClubTeam> clubTeamHistory) {
         this.id = id;
         this.name = name;
         this.country = country;
@@ -27,6 +30,7 @@ public class Footballer {
         this.position = position;
         this.yearOfBirth = yearOfBirth;
         this.currentClubTeam = currentClubTeam;
+        this.clubTeamHistory = clubTeamHistory;
     }
 
     public int getId() {
@@ -77,6 +81,14 @@ public class Footballer {
         return yearOfBirth;
     }
 
+    /**
+     * Get all club teams that the footballer has played for. This includes the current club side.
+     * @return all club sides that the footballer has played for
+     */
+    public List<ClubTeam> getClubTeamHistory() {
+        return clubTeamHistory == null ? Collections.emptyList() : Collections.unmodifiableList(clubTeamHistory);
+    }
+
     public static Builder builder() {
         return new Builder();
     }
@@ -93,6 +105,7 @@ public class Footballer {
         private Position position;
         private int yearOfBirth;
         private ClubTeam currentClubTeam;
+        private List<ClubTeam> clubTeamHistory;
 
         public Builder setId(int id) {
             this.id = id;
@@ -149,8 +162,14 @@ public class Footballer {
             return this;
         }
 
+        public Builder setClubTeamHistory(List<ClubTeam> clubTeamHistory) {
+            this.clubTeamHistory = clubTeamHistory;
+            return this;
+        }
+
+
         public Footballer build() {
-            return new Footballer(id, name, country, minutesPlayed, appearances, goals, redCards, yellowCards, position, yearOfBirth, currentClubTeam);
+            return new Footballer(id, name, country, minutesPlayed, appearances, goals, redCards, yellowCards, position, yearOfBirth, currentClubTeam, clubTeamHistory);
         }
     }
 }

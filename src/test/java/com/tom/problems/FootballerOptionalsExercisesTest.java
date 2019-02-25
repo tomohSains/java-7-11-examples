@@ -54,7 +54,7 @@ public class FootballerOptionalsExercisesTest {
     public void givenNoFootballerForId_whenCall_getFootballersClubTeam_thenReturnEmpty() {
         when(footballerRepository.getFootballer(anyInt())).thenReturn(Optional.empty());
 
-        final Optional<String> optionalClubTeamName = cut.getNameOfFootballersClubTeam(123);
+        final Optional<String> optionalClubTeamName = cut.getNameOfFootballersCurrentClubTeam(123);
 
         assertNotNull(optionalClubTeamName); // In actual code, you should not check that the optional is null
         assertFalse(optionalClubTeamName.isPresent());
@@ -66,7 +66,7 @@ public class FootballerOptionalsExercisesTest {
         final int id = 101;
         when(footballerRepository.getFootballer(id)).thenReturn(Optional.of(footballerWithNoClubTeam));
 
-        final Optional<String> optionalClubTeamName = cut.getNameOfFootballersClubTeam(id);
+        final Optional<String> optionalClubTeamName = cut.getNameOfFootballersCurrentClubTeam(id);
 
         assertNotNull(optionalClubTeamName); // In actual code, you should not check that the optional is null
         assertFalse(optionalClubTeamName.isPresent());
@@ -80,7 +80,7 @@ public class FootballerOptionalsExercisesTest {
         final int id = 101;
         when(footballerRepository.getFootballer(id)).thenReturn(Optional.of(footballerWithClubTeam));
 
-        final Optional<String> optionalClubTeamName = cut.getNameOfFootballersClubTeam(id);
+        final Optional<String> optionalClubTeamName = cut.getNameOfFootballersCurrentClubTeam(id);
 
         assertNotNull(optionalClubTeamName); // In actual code, you should not check that the optional is null
         assertTrue(optionalClubTeamName.isPresent());

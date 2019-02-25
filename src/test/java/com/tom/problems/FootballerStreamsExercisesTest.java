@@ -1,5 +1,6 @@
 package com.tom.problems;
 
+import com.tom.domain.ClubTeam;
 import com.tom.domain.Country;
 import com.tom.domain.Footballer;
 import org.junit.Test;
@@ -7,6 +8,7 @@ import org.junit.Test;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import static org.junit.Assert.*;
 
@@ -25,10 +27,10 @@ public class FootballerStreamsExercisesTest {
     @Test
     public void whenCall_findTheNamesOfFootballersWithMoreThan5RedCards_withNoFootballersWithMoreThan5RedCards_thenReturnEmpty() {
         final List<Footballer> footballers = List.of(
-                    Footballer.builder().setName("Maradona").setRedCards(5).build(),
-                    Footballer.builder().setName("Paul Scholes").setRedCards(4).build(),
-                    Footballer.builder().setName("Ruud Gullit").setRedCards(2).build()
-                );
+                Footballer.builder().setName("Maradona").setRedCards(5).build(),
+                Footballer.builder().setName("Paul Scholes").setRedCards(4).build(),
+                Footballer.builder().setName("Ruud Gullit").setRedCards(2).build()
+        );
 
         final List<String> result = cut.findTheNamesOfFootballersWithMoreThan5RedCards(footballers);
 
@@ -196,5 +198,105 @@ public class FootballerStreamsExercisesTest {
         assertEquals(65, (int) result.get(Country.BRAZIL));
         assertEquals(31, (int) result.get(Country.FRANCE));
         assertEquals(37, (int) result.get(Country.GERMANY));
+    }
+
+    @Test
+    public void whenCall_findTheNamesOfAllClubTeamsThatTheFootballersHavePlayedAt_withNoFootballers_thenReturnEmpty() {
+        final Set<String> result = cut.getTheNamesOfAllClubTeamsThatTheFootballersHavePlayedFor(Collections.emptyList());
+
+        assertNotNull(result);
+        assertTrue(result.isEmpty());
+    }
+
+    @Test
+    public void whenCall_findTheNamesOfAllClubTeamsThatTheFootballersHavePlayedAt_withOneFootballer_thenReturnOnlyThatFootballersClubNames() {
+        List<ClubTeam> clubTeams = List.of(
+            ClubTeam.builder().setName("Sporting Lisbon").build(),
+            ClubTeam.builder().setName("Man Utd").build(),
+            ClubTeam.builder().setName("Real Madrid").build(),
+            ClubTeam.builder().setName("Juventus").build()
+        );
+        List<Footballer> allFootballers = List.of(
+                Footballer.builder().setName("Ronaldo").setClubTeamHistory(clubTeams).build()
+        );
+        final Set<String> result = cut.getTheNamesOfAllClubTeamsThatTheFootballersHavePlayedFor(allFootballers);
+
+        assertNotNull(result);
+        assertEquals(4, result.size());
+        assertTrue(result.contains("Sporting Lisbon"));
+        assertTrue(result.contains("Real Madrid"));
+        assertTrue(result.contains("Man Utd"));
+        assertTrue(result.contains("Juventus"));
+    }
+
+    @Test
+    public void whenCall_findTheNamesOfAllClubTeamsThatTheFootballersHavePlayedAt_withTwoFootballers_thenReturnTheSetOfAllTheTwoFootballersClubNames() {
+        List<ClubTeam> ronaldoClubTeams = List.of(
+                ClubTeam.builder().setName("Sporting Lisbon").build(),
+                ClubTeam.builder().setName("Man Utd").build(),
+                ClubTeam.builder().setName("Real Madrid").build(),
+                ClubTeam.builder().setName("Juventus").build()
+        );
+        List<ClubTeam> macmanamanClubTeams = List.of(
+                ClubTeam.builder().setName("Real Madrid").build(),
+                ClubTeam.builder().setName("Liverpool").build(),
+                ClubTeam.builder().setName("Man City").build()
+        );
+        List<Footballer> allFootballers = List.of(
+                Footballer.builder().setName("Ronaldo").setClubTeamHistory(ronaldoClubTeams).build(),
+                Footballer.builder().setName("Steve Mcmanaman").setClubTeamHistory(macmanamanClubTeams).build()
+        );
+
+
+        final Set<String> result = cut.getTheNamesOfAllClubTeamsThatTheFootballersHavePlayedFor(allFootballers);
+
+        assertNotNull(result);
+        assertEquals(6, result.size());
+        assertTrue(result.contains("Sporting Lisbon"));
+        assertTrue(result.contains("Real Madrid"));
+        assertTrue(result.contains("Man Utd"));
+        assertTrue(result.contains("Juventus"));
+        assertTrue(result.contains("Liverpool"));
+        assertTrue(result.contains("Man City"));
+    }
+
+    @Test
+    public void whenCall_findTheNamesOfAllClubTeamsThatTheFootballersHavePlayedAt_withThreeFootballers_thenReturnTheSetOfAllTheThreeFootballersClubNames() {
+        List<ClubTeam> ronaldoClubTeams = List.of(
+                ClubTeam.builder().setName("Sporting Lisbon").build(),
+                ClubTeam.builder().setName("Man Utd").build(),
+                ClubTeam.builder().setName("Real Madrid").build(),
+                ClubTeam.builder().setName("Juventus").build()
+        );
+        List<ClubTeam> macmanamanClubTeams = List.of(
+                ClubTeam.builder().setName("Real Madrid").build(),
+                ClubTeam.builder().setName("Liverpool").build(),
+                ClubTeam.builder().setName("Man City").build()
+        );
+        List<ClubTeam> zidaneClubTeams = List.of(
+                ClubTeam.builder().setName("Real Madrid").build(),
+                ClubTeam.builder().setName("Cannes").build(),
+                ClubTeam.builder().setName("Juventus").build(),
+                ClubTeam.builder().setName("Bordeaux").build()
+        );
+        List<Footballer> allFootballers = List.of(
+                Footballer.builder().setName("Ronaldo").setClubTeamHistory(ronaldoClubTeams).build(),
+                Footballer.builder().setName("Steve Mcmanaman").setClubTeamHistory(macmanamanClubTeams).build(),
+                Footballer.builder().setName("Zidane").setClubTeamHistory(zidaneClubTeams).build()
+        );
+
+
+        final Set<String> result = cut.getTheNamesOfAllClubTeamsThatTheFootballersHavePlayedFor(allFootballers);
+
+        assertNotNull(result);
+        assertEquals(8, result.size());
+        assertTrue(result.contains("Sporting Lisbon"));
+        assertTrue(result.contains("Real Madrid"));
+        assertTrue(result.contains("Man Utd"));
+        assertTrue(result.contains("Juventus"));
+        assertTrue(result.contains("Liverpool"));
+        assertTrue(result.contains("Man City"));
+        assertTrue(result.contains("Cannes"));
+        assertTrue(result.contains("Bordeaux"));
     }
 }
