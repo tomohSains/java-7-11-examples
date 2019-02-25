@@ -5,6 +5,8 @@ import com.tom.domain.Footballer;
 
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collector;
 
 public class FootballerStreamsExercises {
     /**
@@ -20,6 +22,7 @@ public class FootballerStreamsExercises {
     /**
      * Finds the names of the two top-scoring footballers from a list of footballers. If there is a tie between 2nd and 3rd, then this method
      * offers no guarantees about which will be picked.
+     *
      * @param allFootballers the input footballers to search
      * @return a list of names
      */
@@ -30,6 +33,8 @@ public class FootballerStreamsExercises {
 
     /**
      * Creates a map from country to total number of goals scored by that country.
+     *
+     * HINT: see {@link java.util.stream.Collectors#groupingBy(Function, Collector)}
      *
      * @param allFootballers the input footballers to process
      * @return a Map from Country to goals
