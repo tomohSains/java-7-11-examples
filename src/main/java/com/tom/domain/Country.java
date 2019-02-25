@@ -1,4 +1,4 @@
-package com.tom.problems;
+package com.tom.domain;
 
 public enum Country {
     FRANCE,
@@ -6,6 +6,7 @@ public enum Country {
     USA,
     ENGLAND,
     HOLLAND,
+    EGYPT,
     BRAZIL,
     ALGERIA,
     AUSTRALIA,

@@ -1,11 +1,11 @@
-package com.tom.problems;
+package com.tom.domain;
 
 import java.util.Set;
 
 public class FootballerUtils {
 
     private static final Set<Country> UEFA_COUNTRIES = Set.of(Country.FRANCE, Country.GERMANY, Country.ENGLAND, Country.HOLLAND);
-    private static final Set<Country> CAF_COUNTRIES = Set.of(Country.CAMEROON, Country.ALGERIA, Country.LIBERIA);
+    private static final Set<Country> CAF_COUNTRIES = Set.of(Country.CAMEROON, Country.ALGERIA, Country.LIBERIA, Country.EGYPT);
 
     /**
      * Check whether a footballer is from the Union of European Football Associations

@@ -1,6 +1,9 @@
-package com.tom.problems;
+package com.tom.domain;
+
+import java.util.Optional;
 
 public class Footballer {
+    private final int id;
     private final String name;
     private final Country country;
     private final int minutesPlayed;
@@ -10,8 +13,10 @@ public class Footballer {
     private final int yellowCards;
     private final Position position;
     private final int yearOfBirth;
+    private final ClubTeam currentClubTeam;
 
-    public Footballer(String name, Country country, int minutesPlayed, int appearances, int goals, int redCards, int yellowCards, Position position, int yearOfBirth) {
+    private Footballer(int id, String name, Country country, int minutesPlayed, int appearances, int goals, int redCards, int yellowCards, Position position, int yearOfBirth, ClubTeam currentClubTeam) {
+        this.id = id;
         this.name = name;
         this.country = country;
         this.minutesPlayed = minutesPlayed;
@@ -21,6 +26,19 @@ public class Footballer {
         this.yellowCards = yellowCards;
         this.position = position;
         this.yearOfBirth = yearOfBirth;
+        this.currentClubTeam = currentClubTeam;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    /**
+     * Some footballers do not have a current club team, e.g. if they are a free-agent or have retired.
+     * @return the current club team or empty if the footballer does not have a current team
+     */
+    public Optional<ClubTeam> getCurrentClubTeam() {
+        return Optional.ofNullable(currentClubTeam);
     }
 
     public String getName() {
@@ -64,7 +82,7 @@ public class Footballer {
     }
 
     public static class Builder {
-
+        private int id;
         private String name;
         private Country country;
         private int minutesPlayed;
@@ -74,6 +92,17 @@ public class Footballer {
         private int yellowCards;
         private Position position;
         private int yearOfBirth;
+        private ClubTeam currentClubTeam;
+
+        public Builder setId(int id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder setCurrentClubTeam(ClubTeam currentClubTeam) {
+            this.currentClubTeam = currentClubTeam;
+            return this;
+        }
 
         public Builder setName(String name) {
             this.name = name;
@@ -121,7 +150,7 @@ public class Footballer {
         }
 
         public Footballer build() {
-            return new Footballer(name, country, minutesPlayed, appearances, goals, redCards, yellowCards, position, yearOfBirth);
+            return new Footballer(id, name, country, minutesPlayed, appearances, goals, redCards, yellowCards, position, yearOfBirth, currentClubTeam);
         }
     }
 }

@@ -1,4 +1,4 @@
-package com.tom.problems;
+package com.tom.domain;
 
 public enum Position {
     GOALKEEPER,
@@ -6,6 +6,7 @@ public enum Position {
     RIGHT_BACK,
     LEFT_BACK,
     MIDFIELDER,
-    STRIKER
+    STRIKER,
+    UNKNOWN
     //etc
 }
