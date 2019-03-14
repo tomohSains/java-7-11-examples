@@ -3,7 +3,7 @@
 ## What are Completable Futures in Java?
 
 - JDK 5 introduced the `Future` interface for representing the result of an asynchronous operation
-- What do we mean by asynchronous here? Mainly: non-blocking.
+- What do we mean by asynchronous here? Non-blocking.
 - The `Future` interface is limited:
     - The primary methods it has are `done` and `get`
     - You can't easily represent in a non-blocking way:
@@ -39,11 +39,14 @@
 
 ## CompletableFutures vs Parallel Streams
 
-- Typically you will want to use CompletableFutures for handling non-blocking network calls
-- Parallel streams are better for CPU-bound operations
-- The `CompletableFuture` API makes it easy to supply your own thread pool
-- Parallel streams push you to use the common ForkJoin pool in the JVM, which defaults to a low size (the number of processors minus 1).
-- Generally for CompletableFutures you should supply a thread pool (via an executor), unless there is another non-common thread pool
+- Typically you will want to use CompletableFutures for I/O-bound operations (e.g. network calls):
+    - Microservices tend to make lots of network calls as they can be fairly chatty between services.
+    - Also, modern web applications often make use of lots of external services.
+    - Using futures allows you to free up resources as the calling thread does not block as with a normal synchronous operation.
+- Parallel streams are better for CPU-bound operations:
+    - The `CompletableFuture` API makes it easy to supply your own thread pool
+    - However, Parallel streams push you to use the common ForkJoin pool in the JVM, which defaults to a low size (the number of processors minus 1).
+    - Generally for CompletableFutures you should supply a thread pool (via an executor), unless there is another non-common thread pool
 being supplied by library code (for instance, a non-blocking HTTP client)
 
 ## APIs
@@ -59,3 +62,9 @@ to the thread that is 'completing' the previous future.
 - There are some complexities around exception-handling (CompletionException); consult the javadoc for more details.
 - There are some complexities around which thread executes non-async CompletableFuture operations (e.g. thenAccept). This may cause issues in 
 certain cases (e.g. blocking operation applied to Async HTTP client future) that you should bear in mind.
+
+## Exercises
+
+Look at `com.tom.problems.FootballerCompletableFuturesExercisesTest`. The goal is to make all the tests pass without
+modifying the test class itself. Make sure to read the javadoc class-under-test for hints. When implementing the
+solution, don't worry about including robust error-handling.
