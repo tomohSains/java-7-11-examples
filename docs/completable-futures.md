@@ -3,6 +3,7 @@
 ## What are Completable Futures in Java?
 
 - JDK 5 introduced the `Future` interface for representing the result of an asynchronous operation
+- What do we mean by asynchronous here? Mainly: non-blocking.
 - The `Future` interface is limited:
     - The primary methods it has are `done` and `get`
     - You can't easily represent in a non-blocking way:
@@ -11,21 +12,6 @@
         - Error-handling
 - Lots of third-party libraries implemented better APIs for handling asynchronous operations in Java, e.g. Guava's `ListenableFuture`
 - JDK 8 shipped with the `CompletableFuture` API which uses ideas from these other libraries and leverages lambdas for more declarative code
-
-## CompletableFutures vs Parallel Streams
-
-- Typically you will want to use CompletableFutures for handling non-blocking network calls
-- Parallel streams are better for CPU-bound operations
-- The `CompletableFuture` API makes it easy to supply your own thread pool
-- Parallel streams push you to use the common ForkJoin pool in the JVM, which defaults to a low size (the number of processors minus 1).
-- Generally for CompletableFutures you should supply a thread pool (via an executor), unless there is another non-common thread pool
-being supplied by library code (for instance, a non-blocking HTTP client)
-
-## APIs
-
-- We should generally evolve towards using CompletableFutures
-- This may mean adapting third-party APIs to use this interface
-- Better than having 3+ different interfaces that represent the same type of operation
 
 ## Syntax
 
@@ -51,5 +37,25 @@ being supplied by library code (for instance, a non-blocking HTTP client)
 
 ```
 
+## CompletableFutures vs Parallel Streams
+
+- Typically you will want to use CompletableFutures for handling non-blocking network calls
+- Parallel streams are better for CPU-bound operations
+- The `CompletableFuture` API makes it easy to supply your own thread pool
+- Parallel streams push you to use the common ForkJoin pool in the JVM, which defaults to a low size (the number of processors minus 1).
+- Generally for CompletableFutures you should supply a thread pool (via an executor), unless there is another non-common thread pool
+being supplied by library code (for instance, a non-blocking HTTP client)
+
+## APIs
+
+- We should generally evolve towards using CompletableFutures
+- This may mean adapting third-party APIs to use this interface
+- Better than having 3+ different interfaces that represent the same type of operation
+
+## Important
+
 - Note that most `CompletableFuture` API calls have an `async` suffixed variant. This just means that the call will execute on a separate thread 
 to the thread that is 'completing' the previous future.
+- There are some complexities around exception-handling (CompletionException); consult the javadoc for more details.
+- There are some complexities around which thread executes non-async CompletableFuture operations (e.g. thenAccept). This may cause issues in 
+certain cases (e.g. blocking operation applied to Async HTTP client future) that you should bear in mind.
